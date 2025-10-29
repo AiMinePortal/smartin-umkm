@@ -1,0 +1,28 @@
+[build]
+  # Directory untuk publish (root folder)
+  publish = "."
+  # Command build (kosong karena static HTML)
+  command = ""
+  # Environment variables (set HF_TOKEN di sini atau dashboard)
+  [build.environment]
+    HF_TOKEN = "your-huggingface-token-here"  # Ganti dengan token asli, atau set di dashboard
+
+[functions]
+  # Directory functions
+  directory = ".netlify/functions"
+  # Node version (sesuai Netlify default)
+  node_bundler = "esbuild"
+
+# Opsional: Redirects untuk SPA atau custom
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Opsional: Headers untuk keamanan
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; video-src 'self' https:;"

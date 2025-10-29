@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AiMine Portal BLK</title>
+<style>
+:root {
+  --bg: linear-gradient(180deg, #0a0f1c 0%, #1a2332 100%);
+  --card: #0f1724;
+  --accent: #4ade80;
+  --text: #f0f4f8;
+  --text-secondary: #a0aec0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+header {
+  text-align: center;
+  padding: 2rem 0;
+}
+h1 {
+  color: var(--accent);
+  font-size: 2.5rem;
+  margin: 0;
+}
+h2 {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+button {
+  background: var(--accent);
+  color: #041023;
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background: #22c55e;
+  transform: scale(1.05);
+}
+.card {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+textarea, input[type="file"] {
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px;
+  background: #0b1626;
+  color: var(--text);
+  border: 1px solid #1f2937;
+  margin-bottom: 1rem;
+}
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 1s ease-in-out infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0c1220;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 10px;
+}
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--accent);
+}
+.navbar .logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+.toggle-theme {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.hero-video {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px;
+  margin: 1rem auto;
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="logo">
+    <img src="assets/images/logo.png" alt="AiMine Portal BLK Logo">
+    AiMine Portal BLK
+  </div>
+  <div>
+    <a href="builder.html">🧱 Builder</a> |
+    <a href="dashboard.html">📊 Dashboard</a> |
+    <a href="login.html">🔑 Login</a>
+    <button class="toggle-theme" onclick="toggleTheme()">🌙 Mode</button>
+  </div>
+</div>
+
+<div class="container">
+<header>
+  <h1>AiMine Portal BLK</h1>
+  <p>Semua alat AI gratis dalam satu portal futuristik untuk UMKM</p>
+  <!-- Video Hero -->
+  <video class="hero-video" autoplay muted loop>
+    <source src="assets/videos/video.mp4" type="video/mp4">
+    Browser Anda tidak mendukung video. Silakan update browser.
+  </video>
+</header>
+
+<!-- TEXT TO IMAGE -->
+<div class="card">
+  <h2>🖼️ Text → Image</h2>
+  <p>Tulis deskripsi gambar yang kamu inginkan lalu hasilkan gambar dari AI.</p>
+  <textarea id="imgPrompt" rows="3" placeholder="Contoh: Logo UMKM futuristik dengan tema hijau"></textarea><br />
+  <button onclick="generateImage(); updateStats('image')">Generate</button>
+  <div id="imgResult" style="margin-top: 10px"></div>
+</div>
+
+<!-- IMAGE TO BETTER IMAGE -->
+<div class="card">
+  <h2>🖼️ Image → Better Image</h2>
+  <p>Pilih gambar untuk ditingkatkan kualitasnya (Enhancer AI).</p>
+  <input type="file" id="enhanceInput" accept="image/*" /><br />
+  <button onclick="enhanceImage()">Perbaiki Gambar</button>
+  <div id="enhanceResult" style="margin-top: 10px"></div>
+</div>
+
+<!-- TEXT TO SPEECH -->
+<div class="card">
+  <h2>🔊 Text → Speech</h2>
+  <textarea id="ttsText" rows="3" placeholder="Tulis teks untuk diubah jadi suara"></textarea><br />
+  <button onclick="playTTS()">Putar Suara</button>
+</div>
+
+<!-- TEXT TO VIDEO -->
+<div class="card">
+  <h2>🎬 Text → Video</h2>
+  <p>Hasilkan video dari teks (via Hugging Face).</p>
+  <textarea id="videoPrompt" rows="3" placeholder="Contoh: Video animasi kopi UMKM"></textarea><br />
+  <button onclick="generateVideo()">Generate Video</button>
+  <div id="videoResult" style="margin-top: 10px"></div>
+</div>
+
+<!-- IMAGE TO VIDEO -->
+<div class="card">
+  <h2>📸 Image → Video</h2>
+  <p>Upload gambar untuk diubah jadi video (via Hugging Face).</p>
+  <input type="file" id="videoInput" accept="image/*" /><br />
+  <button onclick="generateVideoFromImage()">Generate Video</button>
+  <div id="videoFromImageResult" style="margin-top: 10px"></div>
+</div>
+
+<!-- AI COPYWRITING -->
+<div class="card">
+  <h2>✍️ AI Copywriting</h2>
+  <p>Tulis topik atau nama produkmu, biarkan AI menulis kontennya!</p>
+  <textarea id="copyPrompt" rows="3" placeholder="Contoh: Produk kopi UMKM"></textarea><br />
+  <button onclick="generateCopy()">Generate Copywriting</button>
+  <div id="copyResult" style="margin-top: 10px"></div>
+</div>
+
+<footer>
+  <p>AiMine Portal BLK © 2025 — Gratis, Legal, dan Futuristik • Powered by Hugging Face & Browser AI</p>
+</footer>
+</div>
+
+<script>
+// Toggle Theme
+function toggleTheme() {
+  const root = document.documentElement;
+  const currentBg = getComputedStyle(root).getPropertyValue('--bg');
+  if (currentBg.includes('#0a0f1c')) {
+    root.style.setProperty('--bg', 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)');
+    root.style.setProperty('--card', '#ffffff');
+    root.style.setProperty('--text', '#1a202c');
+    root.style.setProperty('--text-secondary', '#718096');
+    document.body.style.color = 'var(--text)';
+  } else {
+    root.style.setProperty('--bg', 'linear-gradient(180deg, #0a0f1c 0%, #1a2332 100%)');
+    root.style.setProperty('--card', '#0f1724');
+    root.style.setProperty('--text', '#f0f4f8');
+    root.style.setProperty('--text-secondary', '#a0aec0');
+  }
+}
+
+// Update Stats
+function updateStats(type) {
+  const stats = JSON.parse(localStorage.getItem('aimine_stats')) || { image: 0, copy: 0, video: 0 };
+  stats[type]++;
+  localStorage.setItem('aimine_stats', JSON.stringify(stats));
+}
+
+// TEXT TO IMAGE
+async function generateImage() {
+  const prompt = document.getElementById("imgPrompt").value.trim();
+  if (!prompt) { alert("Masukkan prompt dulu!"); return; }
+  const result = document.getElementById("imgResult");
+  result.innerHTML = '<div class="spinner"></div> Memproses...';
+  try {
+    const res = await fetch("/.netlify/functions/generate-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    const data = await res.json();
+    result.innerHTML = `<img src="${data.image_url}" style="max-width:100%;border-radius:10px;">`;
+  } catch (e) {
+    result.innerHTML = `❌ Gagal: ${e.message}. Coba lagi.`;
+  }
+}
+
+// IMAGE TO BETTER IMAGE
+async function enhanceImage() {
+  const fileInput = document.getElementById("enhanceInput");
+  if (!fileInput.files.length) { alert("Pilih gambar dulu!"); return; }
+  const result = document.getElementById("enhanceResult");
+  result.innerHTML = '<div class="spinner"></div> Memproses...';
+  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append("image", file);
+  try {
+    const res = await fetch("/.netlify/functions/enhance-image", { method: "POST", body: formData });
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    const data = await res.json();
+    result.innerHTML = `<img src="${data.image_url}" style="max-width:100%;border-radius:10px;">`;
+  } catch (e) {
+    result.innerHTML = `❌ Gagal: ${e.message}. Coba lagi.`;
+  }
+}
+
+// TEXT TO SPEECH
+function playTTS() {
+  const text = document.getElementById("ttsText").value.trim() || "Halo, ini suara dari AiMine Portal BLK.";
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "id-ID";
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// TEXT TO VIDEO
+async function generateVideo() {
+  const prompt = document.getElementById("videoPrompt").value.trim();
+  if (!prompt) { alert("Masukkan prompt dulu!"); return; }
+  const result = document.getElementById("videoResult");
+  result.innerHTML = '<div class="spinner"></div> Memproses...';
+  try {
+    const res = await fetch("/.netlify/functions/generate-video", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    const data = await res.json();
+    result.innerHTML = `<video controls style="max-width:100%;border-radius:10px;"><source src="${data.video_url}" type="video/mp4"></video>`;
+  } catch (e) {
+    result.innerHTML = `❌ Gagal: ${e.message}. Coba lagi.`;
+  }
+}
+
+// IMAGE TO VIDEO
+async function generateVideoFromImage() {
+  const fileInput = document.getElementById("videoInput");
+  if (!fileInput.files.length) { alert("Pilih gambar dulu!"); return; }
+  const result = document.getElementById("videoFromImageResult");
+  result.innerHTML = '<div class="spinner"></div> Memproses...';
+  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append("image", file);
+  try {
+    const res = await fetch("/.netlify/functions/generate-video-from-image", { method: "POST", body: formData });
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    const data = await res.json();
+    result.innerHTML = `<video controls style="max-width:100%;border-radius:10px;"><source src="${data.video_url}" type="video/mp4"></video>`;
+  } catch (e) {
+    result.innerHTML = `❌ Gagal: ${e.message}. Coba lagi.`;
+  }
+}
+
+// AI COPYWRITING
+async function generateCopy() {
+  const prompt = document.getElementById("copyPrompt").value.trim();
+  if (!prompt) { alert("Masukkan prompt dulu!"); return; }
+  const result = document.getElementById("copyResult");
+  result.innerHTML = '<div class="spinner"></div> Menulis...';
+  try {
+    const res = await fetch("/.netlify/functions/generate-copywriting", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    result.innerHTML = `<p>${data.text || "Tidak ada hasil."}</p>`;
+  } catch (e) {
+    result.innerHTML = `❌ Gagal: ${e.message}. Coba lagi.`;
+  }
+}
+</script>
+</body>
+</html>
